@@ -1,0 +1,9 @@
+{
+    "dropped_bbox": 384,
+    "dropped_entry_rows": 18009,
+    "modified_entry_cells": 0,
+    "archived_files": [
+        "dropped_data_entry_consolidated.csv",
+        "dropped_bbox_list_consolidated.csv"
+    ]
+}
