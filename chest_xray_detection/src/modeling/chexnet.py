@@ -2,6 +2,8 @@ import torch
 import torch.nn as nn
 from torchvision import models
 
+import torch.nn.functional as F
+
 class CheXNet(nn.Module):
     def __init__(self, num_classes=14, pretrained=True):
         super(CheXNet, self).__init__()
@@ -21,9 +23,22 @@ class CheXNet(nn.Module):
         # We output logits (raw scores). Sigmoid will be applied during loss calculation (BCEWithLogitsLoss)
         # or during inference.
         self.densenet121.classifier = nn.Linear(num_features, num_classes)
+        
+        # FIX for Grad-CAM: Disable in-place ReLU
+        # in-place operations can cause "RuntimeError: Output 0 of BackwardHookFunctionBackward is a view..."
+        for module in self.densenet121.modules():
+            if isinstance(module, nn.ReLU):
+                module.inplace = False
 
     def forward(self, x):
-        return self.densenet121(x)
+        # Manually run DenseNet121 forward pass to avoid functional inplace ReLU
+        # Original: return self.densenet121(x)
+        features = self.densenet121.features(x)
+        out = F.relu(features, inplace=False)
+        out = F.adaptive_avg_pool2d(out, (1, 1))
+        out = torch.flatten(out, 1)
+        out = self.densenet121.classifier(out)
+        return out
 
 if __name__ == "__main__":
     # Test model
