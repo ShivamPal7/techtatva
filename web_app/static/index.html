@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>X-Ray Insight | AI-Powered Diagnosis</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;700&family=Inter:wght@300;400;500;600&display=swap"
+        rel="stylesheet">
+    <script>
+        // Smart Redirect: Ensure users are on the correct port (8010) and not Live Server (5500)
+        if (window.location.host.includes(':5500')) {
+            const newUrl = window.location.href.replace(':5500', ':8010').replace('/web_app/static', '');
+            console.log('Redirecting to backend-served frontend:', newUrl);
+            window.location.href = newUrl;
+        }
+    </script>
+</head>
+
+<body>
+    <div class="background-blob"></div>
+    <div class="background-blob-2"></div>
+
+    <nav>
+        <div class="container nav-content">
+            <div class="logo">
+                <span class="logo-icon">🩻</span>
+                <h1>X-Ray<span>Insight</span></h1>
+            </div>
+            <div class="status-badge">
+                <span class="status-dot"></span>
+                AI Model Online
+            </div>
+        </div>
+    </nav>
+
+    <main class="container">
+        <section class="hero">
+            <h2>Next-Gen Chest X-Ray Analysis</h2>
+            <p>Upload a PA or AP view chest radiograph for instant abnormality detection and visual explanation.</p>
+        </section>
+
+        <section class="app-grid">
+            <div class="card upload-card">
+                <div class="card-header">
+                    <h3>Analyze Image</h3>
+                </div>
+                <div class="upload-zone" id="dropZone">
+                    <input type="file" id="fileInput" accept="image/*" hidden>
+                    <div class="upload-content">
+                        <div class="upload-icon">📤</div>
+                        <p>Drag & Drop X-ray image here</p>
+                        <span>or</span>
+                        <button class="btn btn-primary" id="browseBtn">Browse Files</button>
+                    </div>
+                </div>
+                <div class="preview-container hidden" id="previewContainer">
+                    <img id="imagePreview" src="" alt="Preview">
+                    <button class="btn btn-danger btn-sm" id="removeImg">Remove</button>
+                    <button class="btn btn-success btn-full" id="analyzeBtn">Run AI Analysis</button>
+                </div>
+            </div>
+
+            <div class="card results-card">
+                <div class="card-header">
+                    <h3>Diagnosis Results</h3>
+                </div>
+                <div class="results-placeholder" id="resultsPlaceholder">
+                    <div class="placeholder-icon">🔍</div>
+                    <p>Analysis results will appear here after processing.</p>
+                </div>
+                <div class="loading-state hidden" id="loadingState">
+                    <div class="spinner"></div>
+                    <p>AI is analyzing the radiographs...</p>
+                </div>
+                <div class="results-content hidden" id="resultsContent">
+                    <div class="prob-list" id="probList">
+                        <!-- Probabilities will be injected here -->
+                    </div>
+                    <div class="gradcam-section">
+                        <h4>Grad-CAM Visualization</h4>
+                        <p class="explanation">Heatmap highlighting regions that influenced the top diagnosis.</p>
+                        <div class="gradcam-container">
+                            <img id="gradcamImg" src="" alt="Grad-CAM Visualization">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <div class="container footer-content">
+            <p>&copy; 2026 TechTatva AI Research. For educational purposes only.</p>
+        </div>
+    </footer>
+
+    <script src="main.js"></script>
+</body>
+
+</html>
