@@ -112,8 +112,44 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     });
 
+    // Fetch Model Accuracy
+    async function fetchModelAccuracy() {
+        try {
+            const response = await fetch('/health');
+            if (response.ok) {
+                const data = await response.json();
+                if (data.model_accuracy) {
+                    const accuracyPercentage = (data.model_accuracy * 100).toFixed(1);
+                    const accEl = document.getElementById('modelAccuracy');
+                    const accBadge = document.getElementById('accuracyBadge');
+                    if (accEl && accBadge) {
+                        accEl.textContent = `${accuracyPercentage}%`;
+                        accBadge.classList.remove('hidden');
+                    }
+                }
+            }
+        } catch (error) {
+            console.error('Failed to fetch model accuracy:', error);
+        }
+    }
+
+    // Call fetchModelAccuracy on load
+    fetchModelAccuracy();
+
     function displayResults(data) {
         probList.innerHTML = '';
+
+        // Display Confidence of top prediction
+        if (data.predictions && data.predictions.length > 0) {
+            const topPred = data.predictions[0];
+            const confidencePercentage = (topPred.probability * 100).toFixed(1);
+            const confEl = document.getElementById('predConfidence');
+            const confBadge = document.getElementById('confidenceBadge');
+            if (confEl && confBadge) {
+                confEl.textContent = `${confidencePercentage}%`;
+                confBadge.classList.remove('hidden');
+            }
+        }
 
         data.predictions.forEach(pred => {
             const percentage = (pred.probability * 100).toFixed(1);

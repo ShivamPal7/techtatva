@@ -1,5 +1,6 @@
 # Data
 raw_data/
+web_app/uploads
 
 # Python
 __pycache__/
